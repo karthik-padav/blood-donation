@@ -12,12 +12,14 @@ import {
   Image,
   Button,
   TouchableOpacity,
+  ToastAndroid,
   StyleSheet
 } from 'react-native';
 import RNAccountKit from 'react-native-facebook-account-kit';
 export const USER_DATA = "auth-demo-key";
 
 import { getUserData } from '../dataService';
+import { onSignIn } from "../auth";
 
 export default class Otp extends Component {
 
@@ -45,30 +47,31 @@ export default class Otp extends Component {
         } else {
           RNAccountKit.getCurrentAccount()
             .then((account) => {
+              console.log("Account info ");
+              console.log( account);
               this.userInfo = account;
               this.userInfo.token = token.token;
 
               // Check for existing user
-              getUserData(this.userInfo.phoneNumber)
+              getUserData(this.userInfo)
                 .then(res => {
                   this.setState({ userData: res });
-                  if(this.state.userData.status == "user_not_found"){
-                    this.props.navigation.navigate('EditProfile');
+                  console.log('get user data response');
+                  console.log(res);
+                  if (this.state.userData.status == "user_not_found") {
+                    this.props.navigation.navigate('EditProfile', {
+                      "countryCode": this.userInfo.phoneNumber.countryCode,
+                      "number": this.userInfo.phoneNumber.number
+                    });
                   } else {
-                    AsyncStorage.setItem(USER_DATA, JSON.stringify(this.userInfo))
-                    .then(() => {
+                    onSignIn().then(() => {
                       this.props.navigation.navigate("SignedIn");
-                      console.log('user data is below');
-                      console.log(this.state.userData);
-                    }).catch(err => alert("An error occurred in storing user data locally"));
+                    }).catch(err => ToastAndroid.show("An error occurred in storing user data locally", ToastAndroid.SHORT));;
                   }
 
                 })
-                .catch(err => alert("An error occurred in fetching user data"));
-                
+                .catch(err => ToastAndroid.show("An error occurred in fetching user data", ToastAndroid.SHORT));
             })
-
-
         }
       })
   }

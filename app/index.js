@@ -13,7 +13,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    alert('checking for local user info')
+    // alert('checking for local user info')
     isSignedIn()
       .then(res => this.setState({ signedIn: res ? true : false, checkedSignIn: true }))
       .catch(err => alert("An error occurred"));
