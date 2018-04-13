@@ -14,11 +14,15 @@ import {
 import ImagePicker from 'react-native-image-crop-picker';
 import { regUser } from '../dataService';
 
-// var ImagePicker = NativeModules.ImageCropPicker;
+import ActionSheet from 'react-native-action-sheet-native'
+
+const IMAGE_PICKER_OPTIONS = ['Quay lại', 'Thư viện ảnh', 'Chụp ảnh mới']
+
 
 export default class EditProfile extends Component {
   static navigationOptions = {
     headerTitle: 'Edit profile',
+    headerLeft: null,
     headerRight: (
       <Button
         onPress={() => alert('This is a button!')}
@@ -30,15 +34,15 @@ export default class EditProfile extends Component {
   constructor(props) {
     super(props)
 
-    const {state} = props.navigation;
+    const { state } = props.navigation;
     console.log('data from otp page');
     console.log(state.params);
 
     this.state = {
       userData: {
         'name': '',
-        'phone_number': state.params?state.params.number:'',
-        'country_code': state.params?state.params.countryCode: '',
+        'phone_number': state.params ? state.params.countryCode + ' ' + state.params.number : '',
+        'country_code': state.params ? state.params.countryCode : '',
         'email': '',
         'gender': 'Male',
         'user_dp': '',
@@ -106,32 +110,32 @@ export default class EditProfile extends Component {
 
   // Submit user data
   submitUserData() {
-    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     console.log(this.state);
-    if(!this.state.userData.name){
+    if (!this.state.userData.name) {
       console.log('invalid name');
-      this.setState({invalidName: true});
+      this.setState({ invalidName: true });
     } else {
-      this.setState({invalidName: false});
+      this.setState({ invalidName: false });
     }
-    if(!this.state.userData.age){
+    if (!this.state.userData.age) {
       console.log('invalid age');
-      this.setState({invalidAge: true});
+      this.setState({ invalidAge: true });
     } else {
-      this.setState({invalidAge: false});
+      this.setState({ invalidAge: false });
     }
-    if(reg.test(this.state.userData.email) === false){
+    if (reg.test(this.state.userData.email) === false) {
       console.log('invalid email');
-      this.setState({invalidEmail: true});
+      this.setState({ invalidEmail: true });
     } else {
-      this.setState({invalidEmail: false});
+      this.setState({ invalidEmail: false });
     }
     regUser(this.state.userData)
       .then(res => {
         console.log(res);
-        if(res.status == 'Success'){
+        if (res.status == 'Success') {
           this.props.navigation.navigate("SignedIn");
-          ToastAndroid.show("Hi " + res.userData.name +"", ToastAndroid.SHORT);
+          ToastAndroid.show("Hi " + res.userData.name + "", ToastAndroid.SHORT);
         }
       })
       .catch(err => ToastAndroid.show("An error occurred in fetching user data", ToastAndroid.SHORT));

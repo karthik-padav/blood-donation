@@ -1,9 +1,8 @@
-const Base_url = 'http://192.168.1.244:8080'
+const Base_url = 'http://192.168.1.249:8080'
 
 
 export const getUserData = (userInfo) => {
-    console.log('Api call');
-    console.log(userInfo);
+    console.log('getUserData API called');
     return new Promise((resolve, reject) => {
         fetch(Base_url + '/getUserData', {
             method: 'POST',
@@ -16,11 +15,16 @@ export const getUserData = (userInfo) => {
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson !== null) {
+                    console.log('API response');
+                    console.log(responseJson);
                     resolve(responseJson);
                 } else {
                     resolve(false);
                 }
-            }).catch(err => reject(err));
+            }).catch(err => {
+                console.log(err);
+                reject(err)
+            });
     });
 };
 

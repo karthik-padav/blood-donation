@@ -18,27 +18,15 @@ import Otp from "./screens/Otp";
 //   marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
 // };
 
-export const SignedOut = StackNavigator({
+export const otpSceen = StackNavigator({
   Otp: {
     screen: Otp,
     navigationOptions: {
-      title: "Login",
-      // headerStyle
+      header: null
     }
   },
-  SignUp: {
-    screen: SignUp,
-    navigationOptions: {
-      title: "SignUp",
-      // headerStyle
-    }
-  },
-  SignIn: {
-    screen: SignIn,
-    navigationOptions: {
-      title: "Sign In",
-      // headerStyle
-    }
+  EditProfile: {
+    screen: EditProfile
   }
 });
 
@@ -48,46 +36,32 @@ export const SignedIn = TabNavigator(
       screen: Home,
       navigationOptions: {
         tabBarLabel: "Home",
-        tabBarIcon: ({ tintColor }) => (
-          <FontAwesome name="home" size={30} color={tintColor} />
-        )
       }
     },
     Profile: {
       screen: Profile,
       navigationOptions: {
         tabBarLabel: "Profile",
-        tabBarIcon: ({ tintColor }) => (
-          <FontAwesome name="user" size={30} color={tintColor} />
-        )
       }
     }
   },
   {
-    tabBarOptions: {
-      style: {
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
-      }
-    }
+    tabBarPosition: 'bottom'
   }
 );
 
 export const createRootNavigator = (signedIn = false) => {
   return SwitchNavigator(
     {
+      Otp: {
+        screen: otpSceen,
+      },
       SignedIn: {
         screen: SignedIn
       },
-      SignedOut: {
-        screen: SignedOut
-      },
-      EditProfile: {
-        screen: EditProfile
-      },
     },
     {
-      initialRouteName: signedIn ? "SignedIn" : "SignedOut"
-      // initialRouteName: signedIn ? "EditProfile" : "EditProfile"
+      initialRouteName: signedIn ? "SignedIn" : "SignedIn"
     }
   );
 };

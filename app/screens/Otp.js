@@ -20,6 +20,7 @@ export const USER_DATA = "auth-demo-key";
 
 import { getUserData } from '../dataService';
 import { onSignIn } from "../auth";
+import { stackNav } from '../router';
 
 export default class Otp extends Component {
 
@@ -39,6 +40,7 @@ export default class Otp extends Component {
     })
   }
 
+  // Display OTP pop up
   displayOtpScreen = () => {
     RNAccountKit.loginWithPhone()
       .then((token) => {
@@ -47,8 +49,6 @@ export default class Otp extends Component {
         } else {
           RNAccountKit.getCurrentAccount()
             .then((account) => {
-              console.log("Account info ");
-              console.log( account);
               this.userInfo = account;
               this.userInfo.token = token.token;
 
@@ -79,11 +79,20 @@ export default class Otp extends Component {
   render() {
     return (
       <View style={styles.formContainer}>
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={this.displayOtpScreen}
+      >
+        <Text style={styles.loginButtonText}> Login </Text>
+      </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={this.displayOtpScreen}
+          onPress={() =>
+            this.props.navigation.navigate('EditProfile')
+          }
         >
-          <Text style={styles.loginButtonText}> Login </Text>
+          <Text style={styles.loginButtonText}> Stack popup </Text>
         </TouchableOpacity>
       </View>
     );
