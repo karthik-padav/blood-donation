@@ -61,7 +61,7 @@ export const createRootNavigator = (signedIn = false) => {
       },
     },
     {
-      initialRouteName: signedIn ? "SignedIn" : "SignedIn"
+      initialRouteName: signedIn ? "SignedIn" : "Otp"
     }
   );
 };

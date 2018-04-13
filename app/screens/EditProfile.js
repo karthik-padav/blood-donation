@@ -41,7 +41,7 @@ export default class EditProfile extends Component {
     this.state = {
       userData: {
         'name': '',
-        'phone_number': state.params ? state.params.countryCode + ' ' + state.params.number : '',
+        'phone_number': state.params ? state.params.number : '',
         'country_code': state.params ? state.params.countryCode : '',
         'email': '',
         'gender': 'Male',

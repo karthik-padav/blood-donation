@@ -2,6 +2,7 @@ const Base_url = 'http://192.168.1.249:8080'
 
 
 export const getUserData = (userInfo) => {
+    console.log(userInfo);
     console.log('getUserData API called');
     return new Promise((resolve, reject) => {
         fetch(Base_url + '/getUserData', {

@@ -1,10 +1,15 @@
 import React, {Component} from "react";
 import {
   View,
-  StyleSheet
+  StyleSheet,
+  AsyncStorage,
+  ToastAndroid
 } from "react-native";
 import { Card, Button, Text } from "react-native-elements";
-import { onSignOut } from "../auth";
+import { onSignOut, isSignedIn } from "../auth";
+import { getUserData } from '../dataService';
+
+export const USER_DATA = "auth-demo-key";
 
 // export default ({ navigation }) => (
 //   <View style={{ paddingVertical: 20 }}>
@@ -33,6 +38,30 @@ import { onSignOut } from "../auth";
 // );
 
 export default class Profile extends Component {
+
+  componentDidMount(){
+    console.log('Profile page');
+    AsyncStorage.getItem(USER_DATA)
+    .then(res => {
+        if (res !== null) {
+          console.log(res);
+          getUserData(res)
+            .then(res => {
+              this.setState({ userData: res });
+              console.log('get user data response');
+              console.log(res);
+              // if (this.state.userData.status == "user_not_found") {
+              //   console.log();
+              // } else {
+              //   console.log(this.state);
+              // }
+
+            })
+            .catch(err => ToastAndroid.show("An error occurred in fetching user data", ToastAndroid.SHORT));
+        
+        }
+    }).catch(err => reject(err));
+  }
 
   render() {
     return (
